@@ -1,7 +1,7 @@
 {
-  "name": "@hyperswarm/dht",
+  "name": "dht",
   "version": "5.0.17",
-  "description": "The DHT powering the HyperSwarm stack",
+  "description": "core/dht",
   "main": "index.js",
   "browser": "browser.js",
   "dependencies": {
@@ -28,7 +28,17 @@
     "test": "standard && brittle test/*.js",
     "lint": "standard"
   },
-  "author": "Mathias Buus (@mafintosh)",
+  "contributors": [
+    {
+      "name": "backbone://dao",
+      "email": "team@backbonedao.com",
+      "url": "https://backbonedao.com"
+    },
+    {
+      "name": "Mathias Buus",
+      "twitter": "@mafintosh"
+    }
+  ],
   "license": "MIT",
   "directories": {
     "lib": "lib",
@@ -36,13 +46,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/hyperswarm/dht.git"
+    "url": "git+https://github.com/backbonedao/dht.git"
   },
   "keywords": [],
   "bugs": {
-    "url": "https://github.com/hyperswarm/dht/issues"
+    "url": "https://github.com/backbonedao/dht/issues"
   },
-  "homepage": "https://github.com/hyperswarm/dht#readme",
+  "homepage": "https://github.com/backbonedao/dht#readme",
   "standard": {
     "ignore": [
       "**/*.mjs"
