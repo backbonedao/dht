@@ -39,7 +39,7 @@
       "twitter": "@mafintosh"
     }
   ],
-  "license": "MIT",
+  "license": "AGPL-3.0-or-later",
   "directories": {
     "lib": "lib",
     "test": "test"
