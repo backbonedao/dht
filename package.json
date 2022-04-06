@@ -1,5 +1,5 @@
 {
-  "name": "dht",
+  "name": "@backbonedao/dht",
   "version": "5.0.17",
   "description": "core/dht",
   "main": "index.js",
