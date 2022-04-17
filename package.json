@@ -5,6 +5,9 @@
   "main": "index.js",
   "browser": "browser.js",
   "dependencies": {
+    "@backbonedao/crypto": "github:backbonedao/crypto",
+    "@backbonedao/noise-handshake": "github:backbonedao/noise-handshake",
+    "@backbonedao/secret-stream": "github:backbonedao/secret-stream",
     "@hyperswarm/secret-stream": "^5.1.0",
     "b4a": "^1.3.1",
     "bind-easy": "^1.0.1",
@@ -22,10 +25,11 @@
   },
   "devDependencies": {
     "brittle": "^2.0.0",
-    "standard": "^16.0.4"
+    "standard": "^16.0.4",
+    "tape": "^5.5.3"
   },
   "scripts": {
-    "test": "standard && brittle test/*.js",
+    "test": "brittle test/*.js",
     "lint": "standard"
   },
   "contributors": [
