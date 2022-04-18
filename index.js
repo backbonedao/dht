@@ -11,6 +11,7 @@ const Server = require('./lib/server')
 const connect = require('./lib/connect')
 const { FIREWALL, PROTOCOL, BOOTSTRAP_NODES, COMMANDS } = require('./lib/constants')
 const { hash, createKeyPair } = require('./lib/crypto')
+const crypto = require('@backbonedao/crypto')
 
 const maxSize = 65536
 const maxAge = 20 * 60 * 1000
@@ -68,13 +69,15 @@ class HyperDHT extends DHT {
   }
 
   findPeer (publicKey, opts = {}) {
-    const target = opts.hash === false ? publicKey : hash(publicKey)
+    let target = opts.hash === false ? publicKey : hash(publicKey)
+    if(!b4a.isBuffer(target)) target = crypto.hex2buf(target)
     opts = { ...opts, map: mapFindPeer }
     return this.query({ target, command: COMMANDS.FIND_PEER, value: null }, opts)
   }
 
   lookup (target, opts = {}) {
     opts = { ...opts, map: mapLookup }
+    if(!b4a.isBuffer(target)) target = crypto.hex2buf(target)
     return this.query({ target, command: COMMANDS.LOOKUP, value: null }, opts)
   }
 
@@ -165,9 +168,9 @@ class HyperDHT extends DHT {
   }
 
   async immutablePut (value, opts = {}) {
-    const target = b4a.allocUnsafe(32)
+    let target = b4a.allocUnsafe(32)
     sodium.crypto_generichash(target, value)
-
+    if(!b4a.isBuffer(target)) target = crypto.hex2buf(target)
     opts = {
       ...opts,
       map: mapImmutable,
@@ -185,8 +188,9 @@ class HyperDHT extends DHT {
   async mutableGet (publicKey, opts = {}) {
     opts = { ...opts, map: mapMutable }
 
-    const target = b4a.allocUnsafe(32)
+    let target = b4a.allocUnsafe(32)
     sodium.crypto_generichash(target, publicKey)
+    if(!b4a.isBuffer(target)) target = crypto.hex2buf(target)
 
     const userSeq = opts.seq || 0
     const query = this.query({ target, command: COMMANDS.MUTABLE_GET, value: c.encode(c.uint, userSeq) }, opts)
@@ -207,8 +211,9 @@ class HyperDHT extends DHT {
   async mutablePut (keyPair, value, opts = {}) {
     const signMutable = opts.signMutable || Persistent.signMutable
 
-    const target = b4a.allocUnsafe(32)
+    let target = b4a.allocUnsafe(32)
     sodium.crypto_generichash(target, keyPair.publicKey)
+    if(!b4a.isBuffer(target)) target = crypto.hex2buf(target)
 
     const seq = opts.seq || 0
     const signature = await signMutable(seq, value, keyPair.secretKey)
