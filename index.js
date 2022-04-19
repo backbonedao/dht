@@ -70,14 +70,12 @@ class HyperDHT extends DHT {
 
   findPeer (publicKey, opts = {}) {
     let target = opts.hash === false ? publicKey : hash(publicKey)
-    if(!b4a.isBuffer(target)) target = crypto.hex2buf(target)
     opts = { ...opts, map: mapFindPeer }
     return this.query({ target, command: COMMANDS.FIND_PEER, value: null }, opts)
   }
 
   lookup (target, opts = {}) {
     opts = { ...opts, map: mapLookup }
-    if(!b4a.isBuffer(target)) target = crypto.hex2buf(target)
     return this.query({ target, command: COMMANDS.LOOKUP, value: null }, opts)
   }
 
@@ -170,7 +168,6 @@ class HyperDHT extends DHT {
   async immutablePut (value, opts = {}) {
     let target = b4a.allocUnsafe(32)
     sodium.crypto_generichash(target, value)
-    if(!b4a.isBuffer(target)) target = crypto.hex2buf(target)
     opts = {
       ...opts,
       map: mapImmutable,
@@ -190,7 +187,6 @@ class HyperDHT extends DHT {
 
     let target = b4a.allocUnsafe(32)
     sodium.crypto_generichash(target, publicKey)
-    if(!b4a.isBuffer(target)) target = crypto.hex2buf(target)
 
     const userSeq = opts.seq || 0
     const query = this.query({ target, command: COMMANDS.MUTABLE_GET, value: c.encode(c.uint, userSeq) }, opts)
@@ -213,7 +209,6 @@ class HyperDHT extends DHT {
 
     let target = b4a.allocUnsafe(32)
     sodium.crypto_generichash(target, keyPair.publicKey)
-    if(!b4a.isBuffer(target)) target = crypto.hex2buf(target)
 
     const seq = opts.seq || 0
     const signature = await signMutable(seq, value, keyPair.secretKey)

@@ -197,7 +197,7 @@ test('holepunch payload with flag and remoteToken', function (t) {
 test('peer with no relays', function (t) {
   const state = { start: 0, end: 0, buffer: null }
 
-  const peer = { publicKey: Buffer.alloc(32).fill('pk'), relayAddresses: [] }
+  const peer = { publicKey: Buffer.alloc(33).fill('pk'), relayAddresses: [] }
 
   m.peer.preencode(state, peer)
   state.buffer = Buffer.allocUnsafe(state.end)
@@ -215,7 +215,7 @@ test('peer with multiple relays', function (t) {
   const state = { start: 0, end: 0, buffer: null }
 
   const peer = {
-    publicKey: Buffer.alloc(32).fill('abc'),
+    publicKey: Buffer.alloc(33).fill('abc'),
     relayAddresses: [{
       host: '127.0.0.1',
       port: 4242
@@ -241,7 +241,7 @@ test('peers', function (t) {
   const state = { start: 0, end: 0, buffer: null }
 
   const peers = [{
-    publicKey: Buffer.alloc(32).fill('abc'),
+    publicKey: Buffer.alloc(33).fill('abc'),
     relayAddresses: [{
       host: '127.0.0.1',
       port: 4242
@@ -250,7 +250,7 @@ test('peers', function (t) {
       port: 402
     }]
   }, {
-    publicKey: Buffer.alloc(32).fill('another'),
+    publicKey: Buffer.alloc(33).fill('another'),
     relayAddresses: []
   }]
 
@@ -271,7 +271,7 @@ test('announce', function (t) {
 
   const ann = {
     peer: {
-      publicKey: Buffer.alloc(32).fill('abc'),
+      publicKey: Buffer.alloc(33).fill('abc'),
       relayAddresses: []
     },
     refresh: null,
@@ -295,11 +295,11 @@ test('announce with signature', function (t) {
 
   const ann = {
     peer: {
-      publicKey: Buffer.alloc(32).fill('abc'),
+      publicKey: Buffer.alloc(33).fill('abc'),
       relayAddresses: []
     },
     refresh: null,
-    signature: Buffer.alloc(64).fill('signature')
+    signature: Buffer.alloc(65).fill('signature')
   }
 
   m.announce.preencode(state, ann)
@@ -319,7 +319,7 @@ test('announce with refresh', function (t) {
 
   const ann = {
     peer: {
-      publicKey: Buffer.alloc(32).fill('abc'),
+      publicKey: Buffer.alloc(33).fill('abc'),
       relayAddresses: []
     },
     refresh: Buffer.alloc(32).fill('refresh'),
