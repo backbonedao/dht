@@ -154,11 +154,11 @@ class HyperDHT extends DHT {
     opts = { ...opts, map: mapImmutable }
 
     const query = this.query({ target, command: COMMANDS.IMMUTABLE_GET, value: null }, opts)
-    const check = b4a.allocUnsafe(32)
+    let check
 
     for await (const node of query) {
       const { value } = node
-      sodium.crypto_generichash(check, value)
+      check = crypto.hex2buf(crypto.createHash(value))
       if (b4a.equals(check, target)) return node
     }
 
@@ -166,8 +166,7 @@ class HyperDHT extends DHT {
   }
 
   async immutablePut (value, opts = {}) {
-    let target = b4a.allocUnsafe(32)
-    sodium.crypto_generichash(target, value)
+    let target = crypto.hex2buf(crypto.createHash(value))
     opts = {
       ...opts,
       map: mapImmutable,
@@ -185,8 +184,7 @@ class HyperDHT extends DHT {
   async mutableGet (publicKey, opts = {}) {
     opts = { ...opts, map: mapMutable }
 
-    let target = b4a.allocUnsafe(32)
-    sodium.crypto_generichash(target, publicKey)
+    const target = crypto.hex2buf(crypto.createHash(publicKey))
 
     const userSeq = opts.seq || 0
     const query = this.query({ target, command: COMMANDS.MUTABLE_GET, value: c.encode(c.uint, userSeq) }, opts)
@@ -207,8 +205,7 @@ class HyperDHT extends DHT {
   async mutablePut (keyPair, value, opts = {}) {
     const signMutable = opts.signMutable || Persistent.signMutable
 
-    let target = b4a.allocUnsafe(32)
-    sodium.crypto_generichash(target, keyPair.publicKey)
+    const target = crypto.hex2buf(crypto.createHash(keyPair.publicKey))
 
     const seq = opts.seq || 0
     const signature = await signMutable(seq, value, keyPair.secretKey)
